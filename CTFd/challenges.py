@@ -3,7 +3,7 @@ import logging
 import re
 import time
 
-from flask import render_template, request, redirect, jsonify, url_for, session, Blueprint, abort
+from flask import current_app as app, render_template, request, redirect, jsonify, url_for, session, Blueprint, abort
 from sqlalchemy.sql import or_
 
 from CTFd.models import db, Challenges, Files, Solves, WrongKeys, Keys, Tags, Teams, Awards, Hints, Unlocks
@@ -369,7 +369,7 @@ def chal(chalid):
         chal_class = get_chal_class(chal.type)
 
         # Anti-bruteforce / submitting keys too quickly
-        if utils.get_kpm(session['id']) > 10:
+        if utils.get_kpm(session['id']) > app.config['RATE_LIMIT']:
             if utils.ctftime():
                 chal_class.fail(team=team, chal=chal, request=request)
             logger.warn("[{0}] {1} submitted {2} with kpm {3} [TOO FAST]".format(*data))

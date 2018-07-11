@@ -142,6 +142,11 @@ class Config(object):
         CACHE_TYPE = 'simple'
 
     '''
+    RATE_LIMIT specifies how many key submissions are allowed per minute
+    '''
+    RATE_LIMIT = os.environ.get('RATE_LIMIT') or 10
+
+    '''
     UPDATE_CHECK specifies whether or not CTFd will check whether or not there is a new version of CTFd
     '''
     UPDATE_CHECK = True
